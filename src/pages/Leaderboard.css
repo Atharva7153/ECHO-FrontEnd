@@ -1,0 +1,32 @@
+.leaderboard-bg { min-height: 100vh; display: flex; align-items: flex-start; justify-content: center; padding-top: 60px; font-family: 'Inter', Arial, sans-serif; background: none; }
+.leaderboard-glass-card { background:#fff; border-radius:18px; box-shadow:0 8px 32px 0 #e3f2fd; border:1.5px solid #e0e7ef; padding:36px 38px 28px 38px; min-width:350px; max-width:1100px; width:100%; color:#232b3b; margin-bottom:40px; }
+.leaderboard-title { color:#1976d2; font-size:1.8em; font-weight:800; margin-bottom:22px; text-align:center; letter-spacing:1px; }
+.leaderboard-flex { display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap:18px; }
+.leaderboard-card { background:#f9fbff; border:1.5px solid #e0e7ef; border-radius:14px; box-shadow:0 4px 16px #e3f2fd; padding:14px; }
+.leaderboard-card-header { font-weight:800; color:#26d0ce; display:flex; align-items:center; gap:8px; margin-bottom:8px; }
+.leaderboard-icon { color:#1976d2; }
+.leaderboard-table-scroll { width:100%; overflow-x:auto; -webkit-overflow-scrolling:touch; }
+.leaderboard-table-modern { width:100%; border-collapse:collapse; }
+.leaderboard-table-modern th, .leaderboard-table-modern td { border:1px solid #e0e7ef; padding:8px 10px; text-align:left; font-size:0.98em; }
+.leaderboard-table-modern th { background:#e3f6fd; color:#1976d2; font-weight:800; }
+.leaderboard-row-highlight { background: #fffde7; }
+
+@media (max-width: 1024px) {
+  .leaderboard-flex { grid-template-columns: 1fr; }
+  .leaderboard-glass-card { min-width: 0; padding: 20px 14px; }
+}
+.leaderboard-container h2 {
+  margin-bottom: 18px;
+  color: #1976d2;
+}
+.leaderboard-list {
+  margin-bottom: 24px;
+}
+.leaderboard-list li {
+  padding: 6px 0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+@media (max-width: 768px) {
+  .leaderboard-container { max-width: 100%; padding: 16px; }
+}

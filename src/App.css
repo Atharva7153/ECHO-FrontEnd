@@ -1,0 +1,109 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: 'Inter', Arial, sans-serif;
+  min-height: 100vh;
+  margin: 0;
+  color: #232b3b;
+  background: linear-gradient(120deg, #f7fafc, #e3f6fd, #f3f7f3, #e0f7fa, #fffde7);
+  background-size: 400% 400%;
+  animation: gradientMove 16s ease infinite;
+}
+
+@keyframes gradientMove {
+  0% {background-position:0% 50%;}
+  50% {background-position:100% 50%;}
+  100% {background-position:0% 50%;}
+}
+
+.main-navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 40px;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(8px);
+  border-radius: 0 0 18px 18px;
+  box-shadow: 0 4px 24px #b0c4de55;
+  margin-bottom: 32px;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  font-family: 'Inter', Arial, sans-serif;
+}
+.main-navbar-logo {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  font-size: 1.5em;
+  font-weight: 700;
+  color: #0b2545;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 8px #e3f2fd;
+  line-height: 1.1;
+}
+
+.main-navbar-brand {
+  display: flex;
+  align-items: center;
+}
+
+.main-navbar-tagline {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #36506c;
+  opacity: 0.9;
+  margin-top: 4px;
+}
+.main-navbar-links a {
+  color: #0b2545;
+  margin-left: 24px;
+  font-size: 1.08em;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s, background 0.2s, border-radius 0.2s;
+  font-family: 'Inter', Arial, sans-serif;
+  padding: 6px 16px;
+  border-radius: 8px;
+  position: relative;
+}
+
+.main-navbar-links {
+  display: flex;
+  align-items: center;
+}
+
+.main-navbar-links a.navbar-link-active,
+.main-navbar-links a.active {
+  background: linear-gradient(90deg, #26d0ce 60%, #b2ebf2 100%);
+  color: #fff !important;
+  font-weight: 700;
+  box-shadow: 0 2px 8px #26d0ce33;
+}
+
+@media (max-width: 768px) {
+  .main-navbar {
+    padding: 14px 16px;
+    border-radius: 0 0 12px 12px;
+  }
+  .main-navbar-logo {
+    font-size: 1.2em;
+  }
+  .main-navbar-tagline { font-size: 0.72rem; }
+  .main-navbar-links {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    gap: 8px;
+    margin-left: 8px;
+  }
+  .main-navbar-links a { margin-left: 0; padding: 6px 10px; font-size: 0.98em; white-space: nowrap; }
+}
