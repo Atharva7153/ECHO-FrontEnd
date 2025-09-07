@@ -1,6 +1,6 @@
 import axios from 'axios';
-// Remove usage of process.env in frontend, use a hardcoded fallback or import.meta.env for Vite
-const BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+// Base URL for backend API; prefer Vite env, fallback to Render URL
+const BASE = import.meta.env.VITE_API_URL || 'https://echo-610a.onrender.com/api';
 
 const token = () => localStorage.getItem('token');
 
