@@ -11,12 +11,15 @@
   letter-spacing: 1px;
 }
 .resolved-empty {
-  background: #fff;
-  border: 1.5px solid #e0e7ef;
+  background: var(--bg-glass);
+  backdrop-filter: blur(10px);
+  border: 1.5px solid var(--border-color);
   border-radius: 12px;
   padding: 18px;
   text-align: center;
-  box-shadow: 0 2px 8px #e3f2fd;
+  box-shadow: var(--shadow-light);
+  color: var(--text-primary);
+  transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 }
 .resolved-list {
   display: grid;
@@ -24,16 +27,17 @@
   gap: 20px;
 }
 .resolved-card {
-  background: #fff;
-  border: 1.5px solid #e0e7ef;
+  background: var(--bg-glass);
+  backdrop-filter: blur(10px);
+  border: 1.5px solid var(--border-color);
   border-radius: 14px;
-  box-shadow: 0 6px 16px #e3f2fd;
+  box-shadow: var(--shadow-light);
   padding: 18px;
-  color: #232b3b;
-  transition: box-shadow 0.2s, transform 0.2s;
+  color: var(--text-primary);
+  transition: box-shadow 0.2s, transform 0.2s, background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
   cursor: pointer;
 }
-.resolved-card:hover { box-shadow: 0 12px 28px #b2ebf2; transform: translateY(-2px); }
+.resolved-card:hover { box-shadow: var(--shadow-heavy); transform: translateY(-2px); }
 .resolved-card-header { display: flex; gap: 14px; align-items: flex-start; }
 .resolved-thumb { width: 120px; height: 90px; object-fit: cover; border-radius: 10px; background: #e3f2fd; box-shadow: 0 2px 8px #b2ebf2; }
 .resolved-thumb-placeholder { display:flex; align-items:center; justify-content:center; color:#607d8b; }

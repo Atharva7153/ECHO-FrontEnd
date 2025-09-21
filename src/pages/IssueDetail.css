@@ -1,11 +1,14 @@
 .issue-detail-container {
   max-width: 700px;
   margin: 0 auto;
-  background: #fff;
+  background: var(--bg-glass);
+  backdrop-filter: blur(10px);
   padding: 24px 28px;
   border-radius: 10px;
-  box-shadow: 0 2px 8px #e0e7ef;
-  color: #232b3b;
+  box-shadow: var(--shadow-light);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 }
 .issue-carousel {
   text-align: center;
@@ -38,16 +41,18 @@
 }
 
 .issue-detail-glass {
-  background: #fff;
+  background: var(--bg-glass);
+  backdrop-filter: blur(10px);
   border-radius: 28px;
-  box-shadow: 0 12px 48px 0 #e3f2fd;
-  border: 2.5px solid #e0e7ef;
+  box-shadow: var(--shadow-heavy);
+  border: 2.5px solid var(--border-color);
   padding: 40px 4vw 36px 4vw;
   min-width: 350px;
   max-width: 1100px;
   width: 100%;
-  color: #232b3b;
+  color: var(--text-primary);
   margin-bottom: 40px;
+  transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
   display: flex;
   flex-direction: column;
   gap: 32px;

@@ -1,8 +1,8 @@
 .leaderboard-bg { min-height: 100vh; display: flex; align-items: flex-start; justify-content: center; padding-top: 60px; font-family: 'Inter', Arial, sans-serif; background: none; }
-.leaderboard-glass-card { background:#fff; border-radius:18px; box-shadow:0 8px 32px 0 #e3f2fd; border:1.5px solid #e0e7ef; padding:36px 38px 28px 38px; min-width:350px; max-width:1100px; width:100%; color:#232b3b; margin-bottom:40px; }
-.leaderboard-title { color:#1976d2; font-size:1.8em; font-weight:800; margin-bottom:22px; text-align:center; letter-spacing:1px; }
+.leaderboard-glass-card { background:var(--bg-glass); backdrop-filter:blur(10px); border-radius:18px; box-shadow:var(--shadow-medium); border:1.5px solid var(--border-color); padding:36px 38px 28px 38px; min-width:350px; max-width:1100px; width:100%; color:var(--text-primary); margin-bottom:40px; transition:background 0.3s ease, border-color 0.3s ease, color 0.3s ease; }
+.leaderboard-title { color:var(--primary-color); font-size:1.8em; font-weight:800; margin-bottom:22px; text-align:center; letter-spacing:1px; transition:color 0.3s ease; }
 .leaderboard-flex { display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap:18px; }
-.leaderboard-card { background:#f9fbff; border:1.5px solid #e0e7ef; border-radius:14px; box-shadow:0 4px 16px #e3f2fd; padding:14px; }
+.leaderboard-card { background:var(--card-bg); border:1.5px solid var(--border-color); border-radius:14px; box-shadow:var(--shadow-light); padding:14px; transition:background 0.3s ease, border-color 0.3s ease; }
 .leaderboard-card-header { font-weight:800; color:#26d0ce; display:flex; align-items:center; gap:8px; margin-bottom:8px; }
 .leaderboard-icon { color:#1976d2; }
 .leaderboard-table-scroll { width:100%; overflow-x:auto; -webkit-overflow-scrolling:touch; }

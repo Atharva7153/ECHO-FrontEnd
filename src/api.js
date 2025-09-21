@@ -13,3 +13,11 @@ api.interceptors.request.use(cfg => {
   if (t) cfg.headers.Authorization = `Bearer ${t}`;
   return cfg;
 });
+
+api.interceptors.response.use(
+  response => response,
+  error => {
+    console.error('API Error:', error.response?.status, error.response?.data || error.message);
+    return Promise.reject(error);
+  }
+);

@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { api } from '../api';
 import { Link } from 'react-router-dom';
+import { useLanguage } from '../contexts/LanguageContext';
 import './Home.css';
 import { FaUser, FaThumbsUp, FaCheckCircle, FaClock, FaCamera } from 'react-icons/fa';
 
 export default function Home() {
   const [issues, setIssues] = useState([]);
+  const { t } = useLanguage();
 
   useEffect(() => { load(); }, []);
 
@@ -17,10 +19,10 @@ export default function Home() {
   async function upvote(id) {
     try {
       const res = await api.put(`/issues/${id}/upvote`);
-      alert('Upvote toggled. Your points: ' + res.data.userPoints);
+      alert(t('upvote') + ' toggled. Your points: ' + res.data.userPoints);
       load();
     } catch (err) {
-      alert('Login to upvote');
+      alert('Login to ' + t('upvote').toLowerCase());
     }
   }
 
@@ -29,7 +31,7 @@ export default function Home() {
       await api.put(`/issues/${id}/resolve`);
       load();
     } catch (err) {
-      alert('Failed to mark as resolved');
+      alert('Failed to ' + t('markResolved').toLowerCase());
     }
   }
 
@@ -37,12 +39,12 @@ export default function Home() {
     <div className="modern-bg">
       <div className="home-container">
         <h2 className="home-title">
-          <span>Open Civic Issues</span>
+          <span>{t('openCivicIssues')}</span>
         </h2>
         <div className="issues-list">
           {issues.length === 0 && (
             <div className="glass-card" style={{ textAlign: 'center' }}>
-              ! Initializing backend… please wait !
+              ! {t('initializingBackend')} !
             </div>
           )}
 
@@ -68,12 +70,12 @@ export default function Home() {
                 <div className="issue-card-main">
                   <h3 className="issue-title-link">{i.title}</h3>
                   <div className="issue-meta-modern">
-                    <span><FaUser size={13} /> {i.createdBy?.name || 'Unknown'} ({i.createdBy?.role || 'citizen'})</span>
+                    <span><FaUser size={13} /> {i.createdBy?.name || 'Unknown'} ({t(i.createdBy?.role || 'citizen')})</span>
                     <span><FaClock size={13} /> {new Date(i.createdAt).toLocaleString()}</span>
                   </div>
                   <div className="issue-meta-modern">
-                    <span className="issue-chip">{i.category}</span>
-                    <span className={`issue-chip urgency-${(i.urgency || '').toLowerCase()}`}>{i.urgency}</span>
+                    <span className="issue-chip">{t(i.category?.toLowerCase() || 'general')}</span>
+                    <span className={`issue-chip urgency-${(i.urgency || '').toLowerCase()}`}>{t(i.urgency?.toLowerCase() || 'low')}</span>
                   </div>
                   <p className="issue-desc">{i.description}</p>
                 </div>
@@ -81,7 +83,7 @@ export default function Home() {
               <div className="issue-card-footer">
                 <span>
                   <FaCheckCircle color={i.status === 'Pending' ? '#fbc02d' : i.status === 'In Progress' ? '#1976d2' : '#43a047'} />
-                  <b style={{ marginLeft: 4 }}> {i.status}</b>
+                  <b style={{ marginLeft: 4 }}> {t(i.status?.toLowerCase() || 'pending')}</b>
                 </span>
                 <span>
                   <FaThumbsUp color="#1976d2" style={{ marginRight: 3 }} />
@@ -90,13 +92,13 @@ export default function Home() {
               </div>
               <div className="issue-actions-modern" onClick={e => e.stopPropagation()}>
                 <button className="btn-modern" onClick={() => upvote(i._id)}>
-                  <FaThumbsUp style={{ marginRight: 4 }} /> Upvote
+                  <FaThumbsUp style={{ marginRight: 4 }} /> {t('upvote')}
                 </button>
                 <button className="btn-modern btn-resolved" onClick={() => markResolved(i._id)}>
-                  <FaCheckCircle style={{ marginRight: 4 }} /> Mark Resolved
+                  <FaCheckCircle style={{ marginRight: 4 }} /> {t('markResolved')}
                 </button>
                 <Link to={`/issue/${i._id}`} className="btn-modern btn-details">
-                  View Details
+                  {t('viewDetails')}
                 </Link>
               </div>
             </div>
