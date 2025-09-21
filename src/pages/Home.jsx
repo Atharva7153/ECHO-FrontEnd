@@ -42,7 +42,7 @@ export default function Home() {
         <div className="issues-list">
           {issues.length === 0 && (
             <div className="glass-card" style={{ textAlign: 'center' }}>
-              No issues found.
+              ! Initializing backend… please wait !
             </div>
           )}
 
