@@ -56,9 +56,9 @@ export default function Home() {
               onClick={() => window.location.href = `/issue/${i._id}`}
             >
               <div className="issue-card-header">
-                {i.media && Array.isArray(i.media) && i.media.length > 0 && i.media.find(url => url.match(/\.(jpe?g|png|gif|webp)$/i)) ? (
+                {i.media && Array.isArray(i.media) && i.media.length > 0 && i.media.filter(url => url && url.trim()).find(url => url.match(/\.(jpe?g|png|gif|webp)$/i)) ? (
                   <img
-                    src={i.media.find(url => url.match(/\.(jpe?g|png|gif|webp)$/i))}
+                    src={i.media.filter(url => url && url.trim()).find(url => url.match(/\.(jpe?g|png|gif|webp)$/i))}
                     alt=""
                     className="issue-thumb"
                   />

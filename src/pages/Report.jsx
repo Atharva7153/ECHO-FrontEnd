@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { api } from '../api';
 import { useNavigate } from 'react-router-dom';
-import { CLOUDINARY_UPLOAD_PRESET, CLOUDINARY_API_URL } from '../cloudinaryConfig';
+import { CLOUDINARY_CLOUD_NAME, CLOUDINARY_UPLOAD_PRESET, CLOUDINARY_API_URL } from '../cloudinaryConfig';
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import './Report.css';
@@ -30,6 +30,19 @@ export default function Report(){
   const [showMap, setShowMap] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const nav = useNavigate();
+
+  // Debug Cloudinary configuration on component mount
+  useEffect(() => {
+    console.log('Report component - Cloudinary config check:', {
+      CLOUDINARY_CLOUD_NAME,
+      CLOUDINARY_UPLOAD_PRESET,
+      CLOUDINARY_API_URL,
+      env_check: {
+        VITE_CLOUDINARY_CLOUD_NAME: import.meta.env.VITE_CLOUDINARY_CLOUD_NAME,
+        VITE_CLOUDINARY_UPLOAD_PRESET: import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET
+      }
+    });
+  }, []);
 
   async function analyzeDesc(descText) {
     setLoadingAI(true);
@@ -102,12 +115,77 @@ export default function Report(){
   }
 
   async function uploadToCloudinary(file) {
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
-    const res = await fetch(CLOUDINARY_API_URL, { method: 'POST', body: formData });
-    const data = await res.json();
-    return data.secure_url;
+    try {
+      // Validate Cloudinary configuration
+      if (!CLOUDINARY_CLOUD_NAME) {
+        throw new Error('CLOUDINARY_CLOUD_NAME is not defined');
+      }
+      if (!CLOUDINARY_UPLOAD_PRESET) {
+        throw new Error('CLOUDINARY_UPLOAD_PRESET is not defined');
+      }
+
+      // Validate file
+      if (!file) {
+        throw new Error('No file provided');
+      }
+
+      // Check file size (limit to 10MB)
+      const MAX_SIZE = 10 * 1024 * 1024; // 10MB
+      if (file.size > MAX_SIZE) {
+        throw new Error('File size too large. Maximum 10MB allowed.');
+      }
+
+      // Check file type
+      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+      if (!allowedTypes.includes(file.type)) {
+        throw new Error('Invalid file type. Only JPEG, PNG, GIF, and WebP are allowed.');
+      }
+
+      console.log('Uploading to Cloudinary:', {
+        name: file.name,
+        size: file.size,
+        type: file.type,
+        cloudName: CLOUDINARY_CLOUD_NAME,
+        preset: CLOUDINARY_UPLOAD_PRESET
+      });
+
+      // Create FormData
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+      formData.append('folder', 'civic-issues'); // Optional: organize uploads in a folder
+
+      // Upload to Cloudinary
+      const response = await fetch(CLOUDINARY_API_URL, {
+        method: 'POST',
+        body: formData
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Upload failed:', response.status, errorText);
+        throw new Error(`Upload failed: ${response.status} ${response.statusText}`);
+      }
+
+      const result = await response.json();
+      
+      if (result.error) {
+        console.error('Cloudinary error:', result.error);
+        throw new Error(result.error.message || 'Upload failed');
+      }
+
+      if (!result.secure_url) {
+        console.error('No secure_url in response:', result);
+        throw new Error('Upload succeeded but no URL returned');
+      }
+
+      console.log('✅ Upload successful:', result.secure_url);
+      return result.secure_url;
+
+    } catch (error) {
+      console.error('❌ Upload error:', error.message);
+      throw error; // Re-throw to handle in submit function
+    }
   }
 
   async function handleFilesChange(e) {
@@ -116,14 +194,33 @@ export default function Report(){
 
   async function submit(e){
     e.preventDefault();
+    
+    if (!title.trim() || !desc.trim()) {
+      alert('Please fill in title and description');
+      return;
+    }
+
     setUploading(true);
     let mediaURLs = [];
-    for (let file of mediaFiles) {
-      const url = await uploadToCloudinary(file);
-      mediaURLs.push(url);
-    }
-    setUploading(false);
+    
     try {
+      // Upload all files
+      for (let file of mediaFiles) {
+        try {
+          const url = await uploadToCloudinary(file);
+          if (url) {
+            mediaURLs.push(url);
+          }
+        } catch (uploadError) {
+          console.error('Failed to upload file:', file.name, uploadError.message);
+          alert(`Failed to upload ${file.name}: ${uploadError.message}`);
+          // Continue with other files
+        }
+      }
+
+      console.log('All uploads completed. URLs:', mediaURLs);
+
+      // Create issue even if some uploads failed
       const issueData = {
         title,
         description: desc,
@@ -142,7 +239,12 @@ export default function Report(){
       await api.post('/issues', issueData);
       alert('Reported! +10 points');
       nav('/');
-    } catch(err){ alert(err.response?.data?.error || err.message); }
+      
+    } catch(err) { 
+      alert(err.response?.data?.error || err.message); 
+    } finally {
+      setUploading(false);
+    }
   }
 
   return (

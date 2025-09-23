@@ -66,7 +66,7 @@ export default function IssueDetail(){
               <FaChevronLeft />
             </button>
             <div className="carousel-media">
-              {media[mediaIdx].match(/\.(mp4|webm|ogg)$/i)
+              {media[mediaIdx] && media[mediaIdx].match(/\.(mp4|webm|ogg)$/i)
                 ? <video src={media[mediaIdx]} controls className="carousel-img" />
                 : <img src={media[mediaIdx]} alt="" className="carousel-img" />
               }

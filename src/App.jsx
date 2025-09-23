@@ -103,7 +103,12 @@ function Navbar({ isSidebarOpen, toggleSidebar }) {
 
 function AppContent() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [showSplash, setShowSplash] = useState(true);
+  const [showSplash, setShowSplash] = useState(() => {
+    // Check if user has already seen the splash screen in this session/browser
+    const hasSeenSplash = localStorage.getItem('hasSeenSplash');
+    console.log('Splash screen check:', { hasSeenSplash, willShow: !hasSeenSplash });
+    return !hasSeenSplash;
+  });
   
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -111,6 +116,9 @@ function AppContent() {
 
   const handleSplashComplete = () => {
     setShowSplash(false);
+    // Remember that user has seen the splash screen
+    localStorage.setItem('hasSeenSplash', 'true');
+    console.log('Splash screen completed and saved to localStorage');
   };
 
   if (showSplash) {
