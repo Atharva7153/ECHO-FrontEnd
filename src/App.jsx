@@ -103,34 +103,17 @@ function Navbar({ isSidebarOpen, toggleSidebar }) {
 
 function AppContent() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [showSplash, setShowSplash] = useState(() => {
-    // Check if user has already seen the splash screen in this session/browser
-    const hasSeenSplash = localStorage.getItem('hasSeenSplash');
-    console.log('Splash screen check:', { hasSeenSplash, willShow: !hasSeenSplash });
-    return !hasSeenSplash;
-  });
   
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
-
-  const handleSplashComplete = () => {
-    setShowSplash(false);
-    // Remember that user has seen the splash screen
-    localStorage.setItem('hasSeenSplash', 'true');
-    console.log('Splash screen completed and saved to localStorage');
-  };
-
-  if (showSplash) {
-    return <SplashScreen onComplete={handleSplashComplete} />;
-  }
 
   return (
     <BrowserRouter>
       <Navbar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
       <div className="main-content">
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<HomeWithSplash />} />
           <Route path="/report" element={<Report />} />
           <Route path="/issue/:id" element={<IssueDetail />} />
           <Route path="/map" element={<MapPage />} />
@@ -141,6 +124,21 @@ function AppContent() {
       </div>
     </BrowserRouter>
   );
+}
+
+// Component that shows splash screen before Home page
+function HomeWithSplash() {
+  const [showSplash, setShowSplash] = useState(true);
+
+  const handleSplashComplete = () => {
+    setShowSplash(false);
+  };
+
+  if (showSplash) {
+    return <SplashScreen onComplete={handleSplashComplete} />;
+  }
+
+  return <Home />;
 }
 
 export default function App() {
