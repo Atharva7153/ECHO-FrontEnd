@@ -7,13 +7,21 @@ import { FaUser, FaThumbsUp, FaCheckCircle, FaClock, FaCamera } from 'react-icon
 
 export default function Home() {
   const [issues, setIssues] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const { t } = useLanguage();
 
   useEffect(() => { load(); }, []);
 
   async function load() {
-    const res = await api.get('/issues');
-    setIssues(res.data);
+    setIsLoading(true);
+    try {
+      const res = await api.get('/issues');
+      setIssues(res.data);
+    } catch(err) {
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   async function upvote(id) {
@@ -22,6 +30,7 @@ export default function Home() {
       alert(t('upvote') + ' toggled. Your points: ' + res.data.userPoints);
       load();
     } catch (err) {
+    setIsLoading(false);
       alert('Login to ' + t('upvote').toLowerCase());
     }
   }
@@ -42,9 +51,14 @@ export default function Home() {
           <span>{t('openCivicIssues')}</span>
         </h2>
         <div className="issues-list">
-          {issues.length === 0 && (
+          {isLoading && (
             <div className="glass-card" style={{ textAlign: 'center' }}>
               ! {t('initializingBackend')} !
+            </div>
+          )}
+          {!isLoading && issues.length === 0 && (
+            <div className="glass-card" style={{ textAlign: 'center' }}>
+              No open issues found.
             </div>
           )}
 
