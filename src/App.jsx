@@ -12,6 +12,7 @@ import MapPage from "./pages/Map";
 import Dashboard from "./pages/Dashboard";
 import Leaderboard from "./pages/Leaderboard";
 import ResolvedIssues from "./pages/ResolvedIssues";
+import BackendStatus from "./components/BackendStatus";
 import { FaBars, FaTimes, FaHome, FaPlus, FaMap, FaChartBar, FaTrophy, FaCheckCircle } from "react-icons/fa";
 import "./App.css";
 
@@ -122,7 +123,8 @@ function AppContent() {
           <Route path="/resolved" element={<ResolvedIssues />} />
         </Routes>
       </div>
-    </BrowserRouter>
+    <BackendStatus />
+      </BrowserRouter>
   );
 }
 
